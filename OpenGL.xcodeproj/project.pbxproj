@@ -7,7 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		926B39891A252FFF002014EA /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 926B39881A252FFF002014EA /* main.cpp */; };
+		926484381A26744500D1F643 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 926484361A26742800D1F643 /* OpenGL.framework */; };
+		9264843A1A26766D00D1F643 /* libglfw3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 926484391A26766D00D1F643 /* libglfw3.a */; };
+		9264843C1A26773000D1F643 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9264843B1A26773000D1F643 /* Cocoa.framework */; };
+		9264843E1A26777500D1F643 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9264843D1A26777500D1F643 /* IOKit.framework */; };
+		926484401A26778C00D1F643 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9264843F1A26778C00D1F643 /* CoreVideo.framework */; };
+		926B399C1A2530D7002014EA /* Fast.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 926B39901A2530D7002014EA /* Fast.cpp */; };
+		926B399D1A2530D7002014EA /* ModelLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 926B39931A2530D7002014EA /* ModelLoader.cpp */; };
+		927477FD1A25334C00C5AF10 /* libGLEW.1.11.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 927477FC1A25334C00C5AF10 /* libGLEW.1.11.0.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -23,8 +30,18 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		926484361A26742800D1F643 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		926484391A26766D00D1F643 /* libglfw3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libglfw3.a; path = /usr/local/lib/libglfw3.a; sourceTree = "<absolute>"; };
+		9264843B1A26773000D1F643 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		9264843D1A26777500D1F643 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		9264843F1A26778C00D1F643 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		926B39851A252FFF002014EA /* OpenGL */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = OpenGL; sourceTree = BUILT_PRODUCTS_DIR; };
-		926B39881A252FFF002014EA /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		926B398F1A2530D7002014EA /* chessboard.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = chessboard.bmp; sourceTree = "<group>"; };
+		926B39901A2530D7002014EA /* Fast.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Fast.cpp; sourceTree = "<group>"; };
+		926B39931A2530D7002014EA /* ModelLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ModelLoader.cpp; sourceTree = "<group>"; };
+		926B39941A2530D7002014EA /* ModelLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelLoader.h; sourceTree = "<group>"; };
+		926B39951A2530D7002014EA /* Patrick.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Patrick.obj; sourceTree = "<group>"; };
+		927477FC1A25334C00C5AF10 /* libGLEW.1.11.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libGLEW.1.11.0.dylib; path = /usr/local/lib/libGLEW.1.11.0.dylib; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,15 +49,35 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				926484401A26778C00D1F643 /* CoreVideo.framework in Frameworks */,
+				9264843E1A26777500D1F643 /* IOKit.framework in Frameworks */,
+				9264843C1A26773000D1F643 /* Cocoa.framework in Frameworks */,
+				9264843A1A26766D00D1F643 /* libglfw3.a in Frameworks */,
+				926484381A26744500D1F643 /* OpenGL.framework in Frameworks */,
+				927477FD1A25334C00C5AF10 /* libGLEW.1.11.0.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		926484411A267BB400D1F643 /* Dependences */ = {
+			isa = PBXGroup;
+			children = (
+				9264843F1A26778C00D1F643 /* CoreVideo.framework */,
+				9264843D1A26777500D1F643 /* IOKit.framework */,
+				9264843B1A26773000D1F643 /* Cocoa.framework */,
+				926484391A26766D00D1F643 /* libglfw3.a */,
+				926484361A26742800D1F643 /* OpenGL.framework */,
+				927477FC1A25334C00C5AF10 /* libGLEW.1.11.0.dylib */,
+			);
+			name = Dependences;
+			sourceTree = "<group>";
+		};
 		926B397C1A252FFF002014EA = {
 			isa = PBXGroup;
 			children = (
+				926484411A267BB400D1F643 /* Dependences */,
 				926B39871A252FFF002014EA /* OpenGL */,
 				926B39861A252FFF002014EA /* Products */,
 			);
@@ -57,7 +94,11 @@
 		926B39871A252FFF002014EA /* OpenGL */ = {
 			isa = PBXGroup;
 			children = (
-				926B39881A252FFF002014EA /* main.cpp */,
+				926B398F1A2530D7002014EA /* chessboard.bmp */,
+				926B39901A2530D7002014EA /* Fast.cpp */,
+				926B39931A2530D7002014EA /* ModelLoader.cpp */,
+				926B39941A2530D7002014EA /* ModelLoader.h */,
+				926B39951A2530D7002014EA /* Patrick.obj */,
 			);
 			path = OpenGL;
 			sourceTree = "<group>";
@@ -118,7 +159,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				926B39891A252FFF002014EA /* main.cpp in Sources */,
+				926B399D1A2530D7002014EA /* ModelLoader.cpp in Sources */,
+				926B399C1A2530D7002014EA /* Fast.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -202,14 +244,24 @@
 		926B398D1A252FFF002014EA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				LIBRARY_SEARCH_PATHS = "/usr/local/lib/**";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALID_ARCHS = x86_64;
 			};
 			name = Debug;
 		};
 		926B398E1A252FFF002014EA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				LIBRARY_SEARCH_PATHS = "/usr/local/lib/**";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALID_ARCHS = x86_64;
 			};
 			name = Release;
 		};
@@ -232,6 +284,7 @@
 				926B398E1A252FFF002014EA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
