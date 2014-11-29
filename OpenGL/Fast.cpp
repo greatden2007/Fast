@@ -10,16 +10,14 @@
 #include <iostream>
 #include "Object.h"
 
-#define WIDTH  640
-#define HEIGHT 480
+#define WIDTH  200
+#define HEIGHT 200
 GLFWwindow* window;
 Object patrick;
 
 void initModel(const char *filename) {
     patrick.readFromFile(filename);
-    patrick.setProjectionMatrix(45.0f, (float)WIDTH / (float)HEIGHT, 1.0f, 10.0f);
-    patrick.setViewMatrix(0, 0, -4);
-    mult(patrick.MVPmatrix, patrick.projectionMatrix, patrick.viewMatrix);
+    patrick.init(45.0f, (float)WIDTH/(float)HEIGHT, 1.0f, 10.0f, 0, 0, -4);
 }
 int glInit() {
     glewExperimental = GL_TRUE;

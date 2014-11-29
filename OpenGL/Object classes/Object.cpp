@@ -23,16 +23,35 @@ void Object::readFromFile(const char *filename) {
     
 }
 
-void Object::init() {
+/**
+ Projection matrix
+ @param fovy 
+ @param aspect 
+ @param znear nearest drawing pixel
+ @para, zfar
+ 
+ view matrix
+ @param x
+ @param y
+ @param z
+ */
+void Object::init(float fovy, float aspect, float znear, float zfar, float x, float y, float z) {
     //set viewMatrix & ProjectionMatrix
     //...
+    this->setProjectionMatrix(fovy, aspect, znear, zfar);
+    this->setViewMatrix(x, y, z);
+    modelMatrix.x[ 0] = 1; modelMatrix.x[ 1] = 0; modelMatrix.x[ 2] = 0; modelMatrix.x[ 3] += 0;
+    modelMatrix.x[ 4] = 0; modelMatrix.x[ 5] = 1; modelMatrix.x[ 6] = 0; modelMatrix.x[ 7] += 0;
+    modelMatrix.x[ 8] = 0; modelMatrix.x[ 9] = 0; modelMatrix.x[10] = 1; modelMatrix.x[11] += 0;
+    modelMatrix.x[12] = 0; modelMatrix.x[13] = 0; modelMatrix.x[14] = 0; modelMatrix.x[15] = 1;
+    mult(viewProjectionMatrix, projectionMatrix, viewMatrix);
+    mult(MVPmatrix, viewProjectionMatrix, modelMatrix);
 }
 
 void Object::move(float x, float y, float z) {
-    modelMatrix.x[ 0] = 1; modelMatrix.x[ 1] = 0; modelMatrix.x[ 2] = 0; modelMatrix.x[ 3] += x;
-    modelMatrix.x[ 4] = 0; modelMatrix.x[ 5] = 1; modelMatrix.x[ 6] = 0; modelMatrix.x[ 7] += y;
-    modelMatrix.x[ 8] = 0; modelMatrix.x[ 9] = 0; modelMatrix.x[10] = 1; modelMatrix.x[11] += z;
-    modelMatrix.x[12] = 0; modelMatrix.x[13] = 0; modelMatrix.x[14] = 0; modelMatrix.x[15] = 1;
+    modelMatrix.x[11] += z;
+    modelMatrix.x[ 7] += y;
+    modelMatrix.x[ 3] += x;
     mult(MVPmatrix, viewProjectionMatrix, modelMatrix);
 }
 
@@ -41,9 +60,9 @@ void Object::rotate(float x, float y, float z) {
     D = sinf(y), E = cosf(z), F = sinf(z);
     const float AD = A * D, BD = B * D;
         
-    modelMatrix.x[ 0] = C * E;           modelMatrix.x[ 1] = -C * F;          modelMatrix.x[ 2] = D;      modelMatrix.x[ 3] = 0;
-    modelMatrix.x[ 4] = BD * E + A * F;  modelMatrix.x[ 5] = -BD * F + A * E; modelMatrix.x[ 6] = -B * C; modelMatrix.x[ 7] = 0;
-    modelMatrix.x[ 8] = -AD * E + B * F; modelMatrix.x[ 9] = AD * F + B * E;  modelMatrix.x[10] = A * C;  modelMatrix.x[11] = 0;
+    modelMatrix.x[ 0] = C * E;           modelMatrix.x[ 1] = -C * F;          modelMatrix.x[ 2] = D;
+    modelMatrix.x[ 4] = BD * E + A * F;  modelMatrix.x[ 5] = -BD * F + A * E; modelMatrix.x[ 6] = -B * C;
+    modelMatrix.x[ 8] = -AD * E + B * F; modelMatrix.x[ 9] = AD * F + B * E;  modelMatrix.x[10] = A * C;
     modelMatrix.x[12] = 0;               modelMatrix.x[13] = 0;               modelMatrix.x[14] = 0;      modelMatrix.x[15] = 1;
     mult(MVPmatrix, viewProjectionMatrix, modelMatrix);
 }
