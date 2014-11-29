@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9229B98F1A2927D800D066DB /* Object.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9229B98D1A2927D800D066DB /* Object.cpp */; };
+		9229B9921A292B1300D066DB /* MainDrawer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9229B9901A292B1300D066DB /* MainDrawer.cpp */; };
 		926484381A26744500D1F643 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 926484361A26742800D1F643 /* OpenGL.framework */; };
 		9264843A1A26766D00D1F643 /* libglfw3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 926484391A26766D00D1F643 /* libglfw3.a */; };
 		9264843C1A26773000D1F643 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9264843B1A26773000D1F643 /* Cocoa.framework */; };
@@ -15,6 +17,7 @@
 		926B399C1A2530D7002014EA /* Fast.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 926B39901A2530D7002014EA /* Fast.cpp */; };
 		926B399D1A2530D7002014EA /* ModelLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 926B39931A2530D7002014EA /* ModelLoader.cpp */; };
 		927477FD1A25334C00C5AF10 /* libGLEW.1.11.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 927477FC1A25334C00C5AF10 /* libGLEW.1.11.0.dylib */; };
+		928AA4641A29DDDE00825A08 /* FMath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 928AA4621A29DDDE00825A08 /* FMath.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -30,6 +33,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		9229B98D1A2927D800D066DB /* Object.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Object.cpp; path = "Object classes/Object.cpp"; sourceTree = "<group>"; };
+		9229B98E1A2927D800D066DB /* Object.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Object.h; path = "Object classes/Object.h"; sourceTree = "<group>"; };
+		9229B9901A292B1300D066DB /* MainDrawer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MainDrawer.cpp; path = "Drawing classes/MainDrawer.cpp"; sourceTree = "<group>"; };
+		9229B9911A292B1300D066DB /* MainDrawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainDrawer.h; path = "Drawing classes/MainDrawer.h"; sourceTree = "<group>"; };
 		926484361A26742800D1F643 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		926484391A26766D00D1F643 /* libglfw3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libglfw3.a; path = /usr/local/lib/libglfw3.a; sourceTree = "<absolute>"; };
 		9264843B1A26773000D1F643 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -42,6 +49,8 @@
 		926B39941A2530D7002014EA /* ModelLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelLoader.h; sourceTree = "<group>"; };
 		926B39951A2530D7002014EA /* Patrick.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Patrick.obj; sourceTree = "<group>"; };
 		927477FC1A25334C00C5AF10 /* libGLEW.1.11.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libGLEW.1.11.0.dylib; path = /usr/local/lib/libGLEW.1.11.0.dylib; sourceTree = "<absolute>"; };
+		928AA4621A29DDDE00825A08 /* FMath.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FMath.cpp; path = "Math classes/FMath.cpp"; sourceTree = "<group>"; };
+		928AA4631A29DDDE00825A08 /* FMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMath.h; path = "Math classes/FMath.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +79,7 @@
 				926484391A26766D00D1F643 /* libglfw3.a */,
 				926484361A26742800D1F643 /* OpenGL.framework */,
 				927477FC1A25334C00C5AF10 /* libGLEW.1.11.0.dylib */,
+				926B39871A252FFF002014EA /* OpenGL */,
 			);
 			name = Dependences;
 			sourceTree = "<group>";
@@ -78,7 +88,6 @@
 			isa = PBXGroup;
 			children = (
 				926484411A267BB400D1F643 /* Dependences */,
-				926B39871A252FFF002014EA /* OpenGL */,
 				926B39861A252FFF002014EA /* Products */,
 			);
 			sourceTree = "<group>";
@@ -94,6 +103,9 @@
 		926B39871A252FFF002014EA /* OpenGL */ = {
 			isa = PBXGroup;
 			children = (
+				928AA4691A29DE2300825A08 /* Objects */,
+				928AA4681A29DE1C00825A08 /* Drawer */,
+				928AA4651A29DDE200825A08 /* Math */,
 				926B398F1A2530D7002014EA /* chessboard.bmp */,
 				926B39901A2530D7002014EA /* Fast.cpp */,
 				926B39931A2530D7002014EA /* ModelLoader.cpp */,
@@ -101,6 +113,33 @@
 				926B39951A2530D7002014EA /* Patrick.obj */,
 			);
 			path = OpenGL;
+			sourceTree = "<group>";
+		};
+		928AA4651A29DDE200825A08 /* Math */ = {
+			isa = PBXGroup;
+			children = (
+				928AA4621A29DDDE00825A08 /* FMath.cpp */,
+				928AA4631A29DDDE00825A08 /* FMath.h */,
+			);
+			name = Math;
+			sourceTree = "<group>";
+		};
+		928AA4681A29DE1C00825A08 /* Drawer */ = {
+			isa = PBXGroup;
+			children = (
+				9229B9901A292B1300D066DB /* MainDrawer.cpp */,
+				9229B9911A292B1300D066DB /* MainDrawer.h */,
+			);
+			name = Drawer;
+			sourceTree = "<group>";
+		};
+		928AA4691A29DE2300825A08 /* Objects */ = {
+			isa = PBXGroup;
+			children = (
+				9229B98D1A2927D800D066DB /* Object.cpp */,
+				9229B98E1A2927D800D066DB /* Object.h */,
+			);
+			name = Objects;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -160,7 +199,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				926B399D1A2530D7002014EA /* ModelLoader.cpp in Sources */,
+				9229B9921A292B1300D066DB /* MainDrawer.cpp in Sources */,
 				926B399C1A2530D7002014EA /* Fast.cpp in Sources */,
+				9229B98F1A2927D800D066DB /* Object.cpp in Sources */,
+				928AA4641A29DDDE00825A08 /* FMath.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,15 +9,16 @@
 #include <random>
 #include <time.h>
 #include <iostream>
-#include "ModelLoader.h"
+#include "Object.h"
 
 #define WIDTH  640
 #define HEIGHT 480
 GLFWwindow* window;
-ModelLoader modelLoader;
+Object patrick;
 
 void initModel(const char *filename) {
-	modelLoader.read_from_file(filename);
+    patrick.readFromFile(filename);
+    patrick.init();
 }
 int glInit() {
     glewExperimental = GL_TRUE;
@@ -64,19 +65,13 @@ int main() {
 
 	const char* vertex_shader =
 		"#version 400\n"
-		"layout(location = 0) in vec3 vertex_position;"
-		"layout(location = 1) in vec3 vertex_colour;"
-		"layout(location = 2) in vec3 modifier_pos;"
-		"layout(location = 3) in int angle;"
-		"in vec3 vp;"
+        "uniform mat4 modelViewProjectionMatrix;"
+		"uniform vec3 vertex_colour;"
+		"in vec3 position;"
 		"smooth out vec3 colour;"
 		"void main () {"
 		"	colour = vertex_colour;"
-		"	vec3 rot1 = vec3(cos(radians(angle)), sin(radians(angle)), 0);"
-		"	vec3 rot2 = vec3(-sin(radians(angle)), cos(radians(angle)), 0);"
-		"	vec3 rot3 = vec3(0, 0, 1);"
-		"	mat3 rot = mat3(rot1, rot2, rot3);"
-		"	gl_Position = vec4 ( ((vertex_position + modifier_pos) * rot), 1.0);"
+		"	gl_Position = modelViewProjectionMatrix * vec4(position, 1.0);"
 		"}";
 
 	const char* fragment_shader =
@@ -106,10 +101,6 @@ int main() {
 	GLuint shader_programme = glCreateProgram();
 	glAttachShader(shader_programme, fs);
 	glAttachShader(shader_programme, vs);
-	glBindAttribLocation(shader_programme, 0, "vertex_position");
-	glBindAttribLocation(shader_programme, 1, "vertex_colour");
-    glBindAttribLocation(shader_programme, 2, "modifier_pos");
-    glBindAttribLocation(shader_programme, 3, "angle");
 	glLinkProgram(shader_programme);
 	glUseProgram(shader_programme);
 
@@ -122,53 +113,59 @@ int main() {
 	glBindVertexArray(uiVAO[0]);
     
 	// main vertexes
-	float *fQuad_new = new float[modelLoader.vertexs_counter];
-	fQuad_new = modelLoader.vertexes_out;
+    GLuint positionLocation = glGetAttribLocation(shader_programme, "position");
+	float *fQuad_new = new float[patrick.vertices_counter];
+	fQuad_new = patrick.vertices_array;
 	glBindBuffer(GL_ARRAY_BUFFER, uiVBO[0]);
-	glBufferData(GL_ARRAY_BUFFER, modelLoader.vertexs_counter * sizeof(float), &fQuad_new[0], GL_STATIC_DRAW); // ok
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glBufferData(GL_ARRAY_BUFFER, patrick.vertices_counter * sizeof(float), &fQuad_new[0], GL_STATIC_DRAW); // ok
+    glVertexAttribPointer(positionLocation, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(positionLocation);
 
 
-	//color
-	float *fQuadColor = new float[modelLoader.vertexs_counter];
-	for (int i = 0; i < modelLoader.vertexs_counter; i++) {
-		fQuadColor[i] = 0;
-	}
-	glBindBuffer(GL_ARRAY_BUFFER, uiVBO[1]);
-	glBufferData(GL_ARRAY_BUFFER, modelLoader.vertexs_counter * sizeof(float), fQuadColor, GL_STATIC_DRAW);
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
+//	//color
+//	float *fQuadColor = new float[modelLoader.vertexs_counter];
+//	for (int i = 0; i < modelLoader.vertexs_counter; i++) {
+//		fQuadColor[i] = 0;
+//	}
+//	glBindBuffer(GL_ARRAY_BUFFER, uiVBO[1]);
+//	glBufferData(GL_ARRAY_BUFFER, modelLoader.vertexs_counter * sizeof(float), fQuadColor, GL_STATIC_DRAW);
+//	glEnableVertexAttribArray(1);
+//	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
 	// indexes
+	int *indexes_new = new int[patrick.indices_counter];
+	indexes_new = patrick.indices_array; // ok
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiVBO[2]);
-	int *indexes_new = new int[modelLoader.indexes_counter];
-	indexes_new = modelLoader.indexes; // ok
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, modelLoader.indexes_counter * sizeof(int), &indexes_new[0], GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, patrick.indices_counter * sizeof(int), &indexes_new[0], GL_STATIC_DRAW);
 
-	// offset array
-	float *deltaArray = new float[modelLoader.vertexs_counter];
-	for (int i = 0; i < modelLoader.vertexs_counter; i++) {
-		deltaArray[i] = 0;
-	}
-	glBindBuffer(GL_ARRAY_BUFFER, uiVBO[3]);
-	glBufferData(GL_ARRAY_BUFFER, modelLoader.vertexs_counter * sizeof(float), &deltaArray[0], GL_STATIC_DRAW);
-	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, 0);
-
-	//rotate
-	float *rotArray = new float[modelLoader.vertexs_counter];
-	for (int i = 0; i < modelLoader.vertexs_counter; i++) {
-		rotArray[i] = 0;
-	}
-	glBindBuffer(GL_ARRAY_BUFFER, uiVBO[4]);
-	glBufferData(GL_ARRAY_BUFFER, modelLoader.vertexs_counter * sizeof(float), &rotArray[0], GL_STATIC_DRAW);
-	glEnableVertexAttribArray(3);
-	glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, 0, 0);
+//	// offset array
+//	float *deltaArray = new float[modelLoader.vertexs_counter];
+//	for (int i = 0; i < modelLoader.vertexs_counter; i++) {
+//		deltaArray[i] = 0;
+//	}
+//	glBindBuffer(GL_ARRAY_BUFFER, uiVBO[3]);
+//	glBufferData(GL_ARRAY_BUFFER, modelLoader.vertexs_counter * sizeof(float), &deltaArray[0], GL_STATIC_DRAW);
+//	glEnableVertexAttribArray(2);
+//	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, 0);
+//
+//	//rotate
+//	float *rotArray = new float[modelLoader.vertexs_counter];
+//	for (int i = 0; i < modelLoader.vertexs_counter; i++) {
+//		rotArray[i] = 0;
+//	}
+//	glBindBuffer(GL_ARRAY_BUFFER, uiVBO[4]);
+//	glBufferData(GL_ARRAY_BUFFER, modelLoader.vertexs_counter * sizeof(float), &rotArray[0], GL_STATIC_DRAW);
+//	glEnableVertexAttribArray(3);
+//	glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, 0, 0);
+    
+    GLuint matrixLocation = glGetUniformLocation(shader_programme, "modelViewProjectionMatrix");
+    glUniformMatrix4fv(matrixLocation, 1, GL_TRUE, patrick.MVPmatrix.x);
+    
 	
 	srand((unsigned int)time(NULL));
 
 	double xPos, yPos;
+    float anglex=0, angley=0, anglez=0;
 
 	glClearColor(0.5, 1, 1, 1);
 	glViewport(0, 0, WIDTH, HEIGHT);
@@ -177,77 +174,55 @@ int main() {
 		time0 = clock();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glBindVertexArray(uiVAO[0]);
-		glDrawElements(GL_TRIANGLES, modelLoader.indexes_counter, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, patrick.indices_counter, GL_UNSIGNED_INT, 0);
 
 		glfwPollEvents();
 		glfwSwapBuffers(window);
-		if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_1)) {
-			std::cout << "detected left btn" << std::endl;
-			for (int i = 0; i < modelLoader.vertexs_counter; i++) {
-				fQuadColor[i] = rand() % 10 / 10.0;
-			}
-			glBindBuffer(GL_ARRAY_BUFFER, uiVBO[1]);
-			glBufferData(GL_ARRAY_BUFFER, modelLoader.vertexs_counter * sizeof(float), fQuadColor, GL_STATIC_DRAW);
-			glEnableVertexAttribArray(1);
-			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
+//		if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_1)) {
+//			std::cout << "detected left btn" << std::endl;
+//			for (int i = 0; i < modelLoader.vertexs_counter; i++) {
+//				fQuadColor[i] = rand() % 10 / 10.0;
+//			}
+//			glBindBuffer(GL_ARRAY_BUFFER, uiVBO[1]);
+//			glBufferData(GL_ARRAY_BUFFER, modelLoader.vertexs_counter * sizeof(float), fQuadColor, GL_STATIC_DRAW);
+//			glEnableVertexAttribArray(1);
+//			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
+//		}
+//
+		if (glfwGetKey(window, GLFW_KEY_X)) {
+            anglex += 0.1;
+            patrick.rotate(anglex, angley, anglez);
+            glUniformMatrix4fv(matrixLocation, 1, GL_TRUE, patrick.MVPmatrix.x);
 		}
-
-		if (glfwGetKey(window, GLFW_KEY_R)) {
-			std::cout << "detected R btn" << std::endl;
-			for (int i = 0; i < modelLoader.vertexs_counter; i++) {	
-				if (rotArray[i] == 360) {
-					rotArray[i] = 0;
-				}
-				rotArray[i] += 1;
-			}
-			cout << "WARNING!!!" << rotArray[0] << "WARNING!!!" << endl;
-			glBindBuffer(GL_ARRAY_BUFFER, uiVBO[4]);
-			glBufferData(GL_ARRAY_BUFFER, modelLoader.vertexs_counter * sizeof(float), &rotArray[0], GL_STATIC_DRAW);
-			glEnableVertexAttribArray(3);
-			glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, 0, 0);
-		}
-
-		// Перемещение на величину
-		glfwGetCursorPos(window, &xPos, &yPos);
-		//std::cout << xPos << ' ' << yPos << std::endl;
+        if (glfwGetKey(window, GLFW_KEY_Y)) {
+            angley += 0.1;
+            patrick.rotate(anglex, angley, anglez);
+            glUniformMatrix4fv(matrixLocation, 1, GL_TRUE, patrick.MVPmatrix.x);
+        }
+        if (glfwGetKey(window, GLFW_KEY_Z)) {
+            anglez += 0.1;
+            patrick.rotate(anglex, angley, anglez);
+            glUniformMatrix4fv(matrixLocation, 1, GL_TRUE, patrick.MVPmatrix.x);
+        }
+//
+//		// Перемещение на величину
+//		glfwGetCursorPos(window, &xPos, &yPos);
+//		//std::cout << xPos << ' ' << yPos << std::endl;
 		if (glfwGetKey(window, GLFW_KEY_RIGHT)) {
-			for (int i = 0; i < modelLoader.vertexs_counter; i += 3) {
-				deltaArray[i] += 0.01;
-			}
-			glBindBuffer(GL_ARRAY_BUFFER, uiVBO[3]);
-			glBufferData(GL_ARRAY_BUFFER, modelLoader.vertexs_counter * sizeof(float), &deltaArray[0], GL_STATIC_DRAW);
-			glEnableVertexAttribArray(2);
-			glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, 0);
-
+            patrick.move(0.01, 0, 0);
+            glUniformMatrix4fv(matrixLocation, 1, GL_TRUE, patrick.MVPmatrix.x);
 		}
 		if (glfwGetKey(window, GLFW_KEY_LEFT)) {
-			for (int i = 0; i < modelLoader.vertexs_counter; i += 3) {
-				deltaArray[i] -= 0.01;
-			}
-			glBindBuffer(GL_ARRAY_BUFFER, uiVBO[3]);
-			glBufferData(GL_ARRAY_BUFFER, modelLoader.vertexs_counter * sizeof(float), &deltaArray[0], GL_STATIC_DRAW);
-			glEnableVertexAttribArray(2);
-			glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, 0);
+            patrick.move(-0.01, 0, 0);
+            glUniformMatrix4fv(matrixLocation, 1, GL_TRUE, patrick.MVPmatrix.x);
 		}
 		if (glfwGetKey(window, GLFW_KEY_UP)) {
-			for (int i = 1; i < modelLoader.vertexs_counter; i += 3) {
-				deltaArray[i] += 0.01;
-			}
-			glBindBuffer(GL_ARRAY_BUFFER, uiVBO[3]);
-			glBufferData(GL_ARRAY_BUFFER, modelLoader.vertexs_counter * sizeof(float), &deltaArray[0], GL_STATIC_DRAW);
-			glEnableVertexAttribArray(2);
-			glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, 0);
+            patrick.move(0, 0.01, 0);
+            glUniformMatrix4fv(matrixLocation, 1, GL_TRUE, patrick.MVPmatrix.x);
 		}
 		if (glfwGetKey(window, GLFW_KEY_DOWN)) {
-			for (int i = 1; i < modelLoader.vertexs_counter; i += 3) {
-				deltaArray[i] -= 0.01;
-			}
-			glPushMatrix();	
-			glBindBuffer(GL_ARRAY_BUFFER, uiVBO[3]);
-			glBufferData(GL_ARRAY_BUFFER, modelLoader.vertexs_counter * sizeof(float), &deltaArray[0], GL_STATIC_DRAW);
-			glEnableVertexAttribArray(2);
-			glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, 0);
-
+            patrick.move(0, -0.01, 0);
+            glUniformMatrix4fv(matrixLocation, 1, GL_TRUE, patrick.MVPmatrix.x);
 		}
 #ifdef __APPLE__
         clock_t start = clock();
@@ -262,7 +237,7 @@ int main() {
             cout << 1000.0 / (float)(clock() - time0) << endl;
         }
 #endif
-	}
+    }
 
 	glfwTerminate();
 	return 0;
