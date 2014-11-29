@@ -6,11 +6,9 @@
 //  Copyright (c) 2014 Denis. All rights reserved.
 //
 #include "ModelLoader.h"
-typedef struct Mat4x4{
-    float x[16];
-} Mat4x4;
+#include "FMath.h" 
+
 class Object {
-    
     
 public:
     
@@ -21,7 +19,6 @@ public:
     int *indices_array;
     
     void readFromFile(const char* filename);
-    void init();
     /**
      *  Add to MVP matrix translate to 5 px
      *
@@ -33,5 +30,17 @@ public:
     void move(float x, float y, float z);
     void rotate(float x, float y, float z);
     
+    
+    void init(float fovy, float aspect, float znear, float zfar, float x, float y, float z);
+    void setProjectionMatrix(float fovy, float aspect, float znear, float zfar);
+    void setViewMatrix(float x, float y, float z);
+    
+    //
+    // camera
+    Mat4x4 viewMatrix;
+    Mat4x4 modelMatrix;
+    Mat4x4 projectionMatrix;
+    
+    Mat4x4 viewProjectionMatrix;
     Mat4x4 MVPmatrix;
 };

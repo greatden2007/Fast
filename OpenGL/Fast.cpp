@@ -5,20 +5,19 @@
 #include <stdio.h>
 #include </usr/local/include/GL/glew.h>
 #include </usr/local/include/GLFW/glfw3.h>
-//#include <glfw3.h>
 #include <random>
 #include <time.h>
 #include <iostream>
 #include "Object.h"
 
-#define WIDTH  640
-#define HEIGHT 480
+#define WIDTH  200
+#define HEIGHT 200
 GLFWwindow* window;
 Object patrick;
 
 void initModel(const char *filename) {
     patrick.readFromFile(filename);
-    patrick.init();
+    patrick.init(45.0f, (float)WIDTH/(float)HEIGHT, 1.0f, 10.0f, 0, 0, -4);
 }
 int glInit() {
     glewExperimental = GL_TRUE;
@@ -110,7 +109,7 @@ int main() {
 	glGenBuffers(5, uiVBO); 
 
 	// Setup VAO
-	glBindVertexArray(uiVAO[0]);
+	glBindVertexArray(uiVAO[0]);\
     
 	// main vertexes
     GLuint positionLocation = glGetAttribLocation(shader_programme, "position");
@@ -137,26 +136,7 @@ int main() {
 	indexes_new = patrick.indices_array; // ok
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiVBO[2]);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, patrick.indices_counter * sizeof(int), &indexes_new[0], GL_STATIC_DRAW);
-
-//	// offset array
-//	float *deltaArray = new float[modelLoader.vertexs_counter];
-//	for (int i = 0; i < modelLoader.vertexs_counter; i++) {
-//		deltaArray[i] = 0;
-//	}
-//	glBindBuffer(GL_ARRAY_BUFFER, uiVBO[3]);
-//	glBufferData(GL_ARRAY_BUFFER, modelLoader.vertexs_counter * sizeof(float), &deltaArray[0], GL_STATIC_DRAW);
-//	glEnableVertexAttribArray(2);
-//	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, 0);
-//
-//	//rotate
-//	float *rotArray = new float[modelLoader.vertexs_counter];
-//	for (int i = 0; i < modelLoader.vertexs_counter; i++) {
-//		rotArray[i] = 0;
-//	}
-//	glBindBuffer(GL_ARRAY_BUFFER, uiVBO[4]);
-//	glBufferData(GL_ARRAY_BUFFER, modelLoader.vertexs_counter * sizeof(float), &rotArray[0], GL_STATIC_DRAW);
-//	glEnableVertexAttribArray(3);
-//	glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, 0, 0);
+    
     
     GLuint matrixLocation = glGetUniformLocation(shader_programme, "modelViewProjectionMatrix");
     glUniformMatrix4fv(matrixLocation, 1, GL_TRUE, patrick.MVPmatrix.x);
@@ -205,7 +185,7 @@ int main() {
             glUniformMatrix4fv(matrixLocation, 1, GL_TRUE, patrick.MVPmatrix.x);
         }
 //
-//		// Ïåðåìåùåíèå íà âåëè÷èíó
+//		// Å“Ã‚ï£¿Ã‚ÃÃ‚Ë˜Ã‚ÃŒÃ‹Ã‚ ÃŒâ€¡ â€šÃ‚ÃŽÃ‹ËœÃ‹ÃŒÃ›
 //		glfwGetCursorPos(window, &xPos, &yPos);
 //		//std::cout << xPos << ' ' << yPos << std::endl;
 		if (glfwGetKey(window, GLFW_KEY_RIGHT)) {
